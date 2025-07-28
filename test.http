@@ -1,0 +1,66 @@
+### GET كل الكاتيجوريز
+GET http://localhost:8000/category/getCategories?page=1&limit=7
+
+### POST إنشاء كاتيجوري جديدة
+POST http://localhost:8000/category/createCategory
+Content-Type: application/json
+
+{
+  "name": "test CATTTTTT",
+  "image": "test.jpg"
+}
+###
+POST http://localhost:8000/category/createCategory
+Content-Type: application/json
+Authorization: Bearer your_token_here
+
+{
+  "name": "New gory",
+  "image": "img.jpg"
+}
+###
+GET http://localhost:8000/category/getCategories
+Authorization: Bearer your_token_here
+Custom-Header: test-value
+
+###
+POST http://localhost:8000/product/createproduct
+Content-Type: application/json
+
+{
+  "title":"air max and nike ",
+  "description": "is a running shoes",
+  "quantity":21,
+  "sold":10,
+  "price":250.12,
+  "priceAfterDiscount":150,
+  "imageCover":"ww.imagecover111",
+  "categoryId":1,
+  "brandId":2,
+  "ratingAverage":2.5,
+  "colors":["red","black","white"],
+  "images":["www.imag1","image2","image3"],
+  "subcategories":[4013,4014]
+}
+
+###
+POST http://localhost:8000/product/createproduct
+Content-Type: application/json
+
+{
+  "title": "Test20 Product",
+  "description": "A new test product20",
+  "quantity": 15,
+  "sold": 1,
+  "price": 100.1,
+  "priceAfterDiscount": 90.99,
+  "imageCover": "test200.jpg",
+  "categoryId": 1,
+  "brandId": 1,
+  "ratingAverage": 4.8,
+  "colors": ["red"],
+  "images": ["image1.jpg"],
+  "subcategories": [3012]
+}
+
+
