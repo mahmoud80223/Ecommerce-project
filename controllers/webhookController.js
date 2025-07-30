@@ -12,7 +12,6 @@ const stripeWebhook = asyncHandler(async (req, res) => {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-    //  console.log("Webhook body (raw):", req.body.toString());
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
