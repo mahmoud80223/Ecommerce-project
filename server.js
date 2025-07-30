@@ -1,5 +1,8 @@
-const express = require("express");
 const dotenv = require("dotenv");
+
+dotenv.config({ path: "config.env" });
+
+const express = require("express");
 const morgan = require("morgan");
 const categoryRoutes = require("./routes/categoryRoutes");
 const subCategoryRoutes = require("./routes/subCategoryRoutes");
@@ -9,18 +12,23 @@ const userRoutes = require("./routes/userRoutes")
 const cartRoutes = require("./routes/cartRoutes")
 const orderRoutes = require("./routes/orderRoutes")
 const dashboardRoutes = require("./routes/dashboardRoutes")
+const paymentRoutes = require("./routes/paymentRoutes")
 const apiError = require("./utils/apiError");
 const globalError = require("./midlewares/errorMidleware");
-dotenv.config({ path: "config.env" });
 
 //express app
 const app = express();
 
 //midleware
+// app.use("/webhook", webhookRoutes);
+const { stripeWebhook } = require("./controllers/webhookController");
+app.post("/webhook/webhook", express.raw({ type: "application/json" }),stripeWebhook );
 //midleware to parse json body
 app.use(express.json());
 //midleware to parse url encoded body(form data)
 app.use(express.urlencoded({ extended: true }));
+app.use("/payments", paymentRoutes);
+
 
 if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"));
@@ -52,7 +60,6 @@ const server = app.listen(PORT, () => {
   console.log(`app running ON PORT ${PORT}`);
 });
 
-// Promise.reject(new Error("اختبار unhandled rejection"));
 
 //handle rejection outside express
 //Events==>listen==>callback(err)

@@ -58,8 +58,44 @@ async function updateStatus(orderId,status) {
         throw error;
     }
 }
+
+
+async function markOrderAsPaid(orderId) {
+  try {
+    let pool = await sql.connect(config);
+    return await pool
+      .request()
+      .input("in_orderId", sql.Int, orderId)
+      .query(`
+        UPDATE orders
+        SET status = 'paid'
+        WHERE id = @in_orderId
+      `);
+  } catch (error) {
+    throw error
+  }
+}
+async function getPendingOrderByUserId(userId) {
+    try {
+        let pool = await sql.connect(config);
+        let result = await pool
+        .request()
+        .input("in_userId",sql.Int,userId)
+        .query(`
+            SELECT TOP 1 * FROM orders
+        where userId=@in_userId AND status='pending'
+        order by createdAt DESC
+            `)
+            return result.recordset[0]
+    } catch (error) {
+        throw error
+    }
+    
+}
 module.exports={
     createOrder,
     insertOrderItem,
     updateStatus,
+    markOrderAsPaid,
+    getPendingOrderByUserId,
 }

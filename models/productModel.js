@@ -444,6 +444,26 @@ async function decreaseProductQuantity(productId,quantity) {
         throw error;
     }
 }
+
+async function updateQty(productId,newQuantity) {
+    try {
+        let pool = await sql.connect(config)
+        let result = await pool
+        .request()
+        .input("in_productId",sql.Int,productId)
+        .input("in_newQuantity",sql.Int,newQuantity)
+        .query(`
+            update product
+                set quantity=@in_newQuantity
+                 output inserted.*
+                where id=@in_productId
+            `)
+            return result.recordset[0]
+    } catch (error) {
+        throw error
+    }
+    
+}
 module.exports = {
     createProduct,
     createProductColor,
@@ -459,6 +479,7 @@ module.exports = {
     deleteProduct,
     getProductQuantity,
     decreaseProductQuantity,
+    updateQty,
     
 
     

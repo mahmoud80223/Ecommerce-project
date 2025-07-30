@@ -174,10 +174,25 @@ const deleteProductController = asyncHandler(async(req,res,next)=>{
         result
     })
 })
+const updateProductQtyController = asyncHandler(async(req,res,next)=>{
+  const {productId,newQuantity} = req.body;
+  const product = await productModel.getProductById(productId)
+  if(!product){
+    return next(new apiError(`no product foun for this id ${productId}to change the quantity instead create new product`,404))
+  }
+  const newQtyProduct = await productModel.updateQty(productId,newQuantity)
+  res.status(200).send({
+    success:true,
+    message:"the quantity updated successfully",
+    product:newQtyProduct
+  })
+
+})
 module.exports = {
   createProductController,
   getAllProductsController,
   getProductByIdController,
   updateProductController,
   deleteProductController,
+  updateProductQtyController,
 };
